@@ -92,21 +92,17 @@ for (var i = 0; i < list_event_nubers.length; i++){
 }
 
 // exercise 8
-var connection = {
-	ip_address: "127.0.0.1",
-	port: "80",
+var Connection = function(ip,port){
+
+	// if ip/port was defined assing the value or use default 
+	this.ip_address = (ip) ? ip : "127.0.0.1"  ;
+	this.port = (port) ? port : "80";
 	
-	change_port: function(port){
+	this.change_port = function(port){
 		return this.port = port;
-	},
+	};
 	
-	connection: function (ip,port){
-		this.ip_address = ip;
-		this.port = port;
-	},
-	
-	// Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-	randomIP: function(){
+	Connection.randomIP = function(){
 		var ip = "";
 		for (var i = 0; i < 4; i++){
 
@@ -116,35 +112,39 @@ var connection = {
 				ip +=".";
 		}
 		return ip;
-	},
+	};
 	
-	randomPort: function(){
+	Connection.randomPort = function(){
 		// port range 0 to 65536, but only ports numbers 0 to 1024 are reserved for privileged services
 		var port = Math.floor(Math.random() * (65536 - 1024 + 1)) + 1024;
 		
 		return port;
 	}
-	
-};
+}
+
 
 // exercise 9,10
-console.log("\nDefault port was "+ connection.port 
-			+", changed to " + connection.change_port(8888));
+var conn = new Connection();
+console.log("\nDefault port was "+ conn.port 
+			+", changed to " + conn.change_port(8888));
 
 		
 /* Advanced */
 // To test random ip generator please uncomment:
-//console.log("\nIp "+ connection.randomIP());	
+//console.log("\nIp "+ Connection.randomIP());	
 
 // To test random port generator please uncomment:
-//console.log("\nPort "+ connection.randomPort());
+//console.log("\nPort "+ Connection.randomPort());
 
-var connections = [];
+var connList = [];
 for (var i = 0; i < 100; i++){	
-	connections.push(new connection.connection(
-								connection.randomIP(),
-								connection.randomPort()));	
+	connList.push(new Connection(
+								Connection.randomIP(),
+								Connection.randomPort()));	
 }
 // To display created ip addresses and ports uncomment:
-console.log("\n");
-console.log(connections);
+
+connList.forEach(function(conn){
+	console.log("\n" + conn.ip_address + ":" + conn.port);
+});
+
